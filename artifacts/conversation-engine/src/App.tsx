@@ -121,7 +121,7 @@ function App() {
   }
   const controller = controllerRef.current;
 
-  const getSpeaker = (speakerId: string): Character | { name: string; role: string; initials: string; color: string; source: 'local' } =>
+  const getSpeaker = (speakerId: string): Character =>
     speakerId === USER_ID
       ? { id: USER_ID, name: 'Sen', role: 'Katılımcı', initials: 'S', color: '#91a6c4', source: 'local' }
       : speakerMap.get(speakerId) ?? { id: 'unknown', name: 'Katılımcı', role: 'Karakter', initials: '?', color: '#8290a3', source: 'local' };
