@@ -11,6 +11,14 @@ env = { "CI" = "true" }
 [workflows]
 runButton = "Project"
 
+[[workflows.Project.tasks]]
+name = "Frontend"
+command = "pnpm --filter @workspace/conversation-engine run dev"
+
+[[workflows.Project.tasks]]
+name = "API Server"
+command = "pnpm --filter @workspace/api-server run dev"
+
 [agent]
 stack = "PNPM_WORKSPACE"
 expertMode = true
