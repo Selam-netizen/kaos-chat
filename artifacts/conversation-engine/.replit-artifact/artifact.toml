@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/conversation-engine/"
+title = "Conversation Engine"
+description = "A local Turkish dialogue workbench for exploring thoughtful multi-character conversations. Its rules-based engine tracks topics, character positions, claims, questions, and repeated ideas without external APIs or paid AI models."
+version = "1.0.0"
+id = "artifacts/conversation-engine"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/conversation-engine/" ]
+localPort = 19953
+
+[services.development]
+run = "pnpm --filter @workspace/conversation-engine run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/conversation-engine", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/conversation-engine/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "19953"
+BASE_PATH = "/conversation-engine/"

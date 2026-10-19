@@ -1,0 +1,80 @@
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 42 38% 95%;
+  --foreground: 187 26% 18%;
+  --border: 39 20% 84%;
+  --input: 39 20% 84%;
+  --ring: 166 35% 36%;
+  --card: 42 33% 98%;
+  --card-foreground: 187 26% 18%;
+  --primary: 166 36% 32%;
+  --primary-foreground: 44 35% 97%;
+  --secondary: 38 28% 90%;
+  --secondary-foreground: 187 24% 22%;
+  --muted: 40 24% 91%;
+  --muted-foreground: 185 9% 44%;
+  --accent: 18 55% 54%;
+  --accent-foreground: 40 30% 97%;
+  --destructive: 4 54% 49%;
+  --destructive-foreground: 0 0% 100%;
+  --app-font-sans: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
+  --app-font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 188 23% 12%;
+  --foreground: 42 26% 91%;
+  --border: 183 13% 25%;
+  --input: 183 13% 25%;
+  --ring: 164 37% 55%;
+  --card: 187 20% 15%;
+  --card-foreground: 42 26% 91%;
+  --primary: 164 37% 55%;
+  --primary-foreground: 188 25% 12%;
+  --secondary: 185 16% 22%;
+  --secondary-foreground: 42 26% 91%;
+  --muted: 185 16% 22%;
+  --muted-foreground: 181 10% 66%;
+  --accent: 18 54% 62%;
+  --accent-foreground: 188 25% 12%;
+  --destructive: 4 54% 56%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+* { box-sizing: border-box; }
+html, body { min-width: 320px; margin: 0; background: hsl(var(--background)); }
+body { color: hsl(var(--foreground)); font-family: var(--app-font-sans); -webkit-font-smoothing: antialiased; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; }
+.page-shell { min-height: 100dvh; position: relative; overflow: hidden; }
+.fade-up { animation: fade-up .45s cubic-bezier(.2,.7,.2,1) both; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.scrollbar-thin { scrollbar-width: thin; scrollbar-color: hsl(var(--border)) transparent; }
+.scrollbar-thin::-webkit-scrollbar { width: 6px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 8px; }

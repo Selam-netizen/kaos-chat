@@ -1,0 +1,216 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: chat
+    description: Provider-backed group chat operations
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /chat-status:
+    get:
+      operationId: getChatProviderStatus
+      tags: [chat]
+      summary: Read provider key configuration status
+      description: Reports whether provider keys are configured without exposing credentials or making a billable provider call
+      responses:
+        "200":
+          description: Provider configuration status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatProviderStatus"
+  /chatgpt:
+    post:
+      operationId: createChatGptReply
+      tags: [chat]
+      summary: Generate a ChatGPT group-chat reply
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatTurnInput"
+      responses:
+        "200":
+          description: Provider reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProviderReply"
+        "400":
+          description: Invalid conversation context
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "429":
+          description: Request rate limit reached
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: Provider or network error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: Provider key is not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "504":
+          description: Provider request timed out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+  /gemini:
+    post:
+      operationId: createGeminiReply
+      tags: [chat]
+      summary: Generate a Gemini group-chat reply
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatTurnInput"
+      responses:
+        "200":
+          description: Provider reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProviderReply"
+        "400":
+          description: Invalid conversation context
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "429":
+          description: Request rate limit reached
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "502":
+          description: Provider or network error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "503":
+          description: Provider key is not configured
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+        "504":
+          description: Provider request timed out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiError"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    ChatMessageInput:
+      type: object
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+        speakerName:
+          type: string
+          maxLength: 60
+        content:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required: [role, content]
+    ChatTurnInput:
+      type: object
+      properties:
+        topic:
+          type: string
+          minLength: 1
+          maxLength: 300
+        messages:
+          type: array
+          minItems: 1
+          maxItems: 20
+          items:
+            $ref: "#/components/schemas/ChatMessageInput"
+      required: [topic, messages]
+    ProviderReply:
+      type: object
+      properties:
+        text:
+          type: string
+          minLength: 1
+          maxLength: 6000
+        model:
+          type: string
+      required: [text, model]
+    ProviderConfiguration:
+      type: object
+      properties:
+        configured:
+          type: boolean
+        model:
+          type: string
+      required: [configured, model]
+    ChatProviderStatus:
+      type: object
+      properties:
+        openai:
+          $ref: "#/components/schemas/ProviderConfiguration"
+        gemini:
+          $ref: "#/components/schemas/ProviderConfiguration"
+      required: [openai, gemini]
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: string
+        code:
+          type: string
+          enum:
+            - invalid_request
+            - missing_api_key
+            - rate_limited
+            - timeout
+            - provider_error
+            - empty_response
+      required: [error, code]
+
